@@ -1,5 +1,5 @@
 import java.util.Scanner;
-//subir
+
 public class reinasCaballo {
 
     static int[] array = new int[9];
