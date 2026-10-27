@@ -6,19 +6,24 @@ public class reinasCaballo {
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();
 
-        Chess_Board chessBoard;
+        ChessBoard chessBoard;
+        SolutionWriter solutionWriter;
+        Solver solver;
 
         try {
-            chessBoard = new Chess_Board(s);
+            chessBoard = new ChessBoard(s);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             scanner.close();
             return;
         }
 
-        chessBoard.solver(1, 1);
+        solutionWriter = new SolutionWriter(chessBoard);
+        solver = new Solver(chessBoard);
 
-        chessBoard.showBoard();
+        solver.solveBoard(1, 1);
+
+        solutionWriter.showBoard();
 
         scanner.close();
     }

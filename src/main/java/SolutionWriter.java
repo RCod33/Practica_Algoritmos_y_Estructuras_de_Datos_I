@@ -1,53 +1,14 @@
 import java.util.Scanner;
 
-public class Chess_Board {
-    private int[] board = new int[9];
-    private Knight knight;
+public class SolutionWriter {
+    private final ChessBoard chessBoard;
+    int[] board;
+    Knight knight;
 
-    public Chess_Board(String knight) {
-        this.knight = new Knight(knight);
-    }
-
-    private boolean isValidSquare(int col, int row) {
-        int diffCol = Math.abs(col - knight.get_col());
-        int diffRow = Math.abs(row - knight.get_row());
-        boolean isAttacked = (diffCol * diffRow == 2);
-        return col == knight.get_col() || row == knight.get_row() || (diffCol == diffRow) || isAttacked;
-    }
-
-    public void solver(int col, int row) {
-        if (col > 8 || row > 8) return;
-
-        int k_col = knight.get_col();
-        boolean f = isValidSquare(col, row);
-
-        if (!f) {
-            for (int i = 1; i < col; ++i) {
-                if (i == k_col) continue;
-                if (board[i] == row || Math.abs(i - col) == Math.abs(board[i] - row)) {
-                    f = true;
-                    break;
-                }
-            }
-        }
-
-        int last = (k_col == 8) ? 7 : 8;
-
-        if (!f) {
-            board[col] = row;
-            solver(col + 1, 1);
-            if (board[last] == 0) {
-                board[col] = 0;
-            }
-
-        } else if (col == k_col) {
-            solver(col + 1, 1);
-            return;
-        }
-        if (board[last] == 0) {
-            solver(col, row + 1);
-        }
-
+    public SolutionWriter(ChessBoard chessBoard) {
+        this.chessBoard = chessBoard;
+        this.board = chessBoard.getBoard();
+        this.knight = chessBoard.getKnight();
     }
 
     private void showMatrix() {
@@ -58,7 +19,7 @@ public class Chess_Board {
             for (int j = 1; j <= 8; ++j) {
                 if (board[j] == i) {
                     System.out.print("R");
-                } else if (i == knight.get_row() && j == knight.get_col()) {
+                } else if (i == knight.getRow() && j == knight.getCol()) {
                     System.out.print("C");
                 } else {
                     System.out.print(" ");
@@ -73,7 +34,7 @@ public class Chess_Board {
 
     private void showList() {
 
-        System.out.print("\n" + convertToChessPos(knight.get_col(), knight.get_row()) + " ");
+        System.out.print("\n" + convertToChessPos(knight.getCol(), knight.getRow()) + " ");
 
         for(int i = 1; i<=8; ++i) {
             if(board[i] != 0)
@@ -89,7 +50,7 @@ public class Chess_Board {
         return String.valueOf(row) + letterCol;
     }
 
-    public void showBoard () {
+    public void showBoard() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Seleccione una opcion:");
@@ -105,7 +66,4 @@ public class Chess_Board {
             default: System.out.println("Eleccion no valida");
         }
     }
-
-
-
 }

@@ -1,21 +1,26 @@
 class Knight {
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
 
     public Knight(String s) {
+        s = s.toLowerCase();
+
+        if(s.length() != 2)
+            throw new IllegalArgumentException("Posición inválida: " + s);
+
         row = s.charAt(0) - '0';
         col = s.charAt(1) - 96;
 
-        if (!(row == 1 || row == 8 || col == 1 || col == 8)) {
+        if (!(row == 1 || row == 8 || col == 1 || col == 8) && (row >= 1 && row <= 8 && col >= 1 && col <= 8)) {
             throw new IllegalArgumentException("Posición inválida: " + s);
         }
     }
 
 
 
-    public int get_row() { return row; }
+    public int getRow() { return row; }
 
-    public int get_col() {
+    public int getCol() {
         return col;
     }
 }
