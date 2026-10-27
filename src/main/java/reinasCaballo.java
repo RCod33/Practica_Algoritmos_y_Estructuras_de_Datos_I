@@ -19,7 +19,6 @@ public class reinasCaballo {
         chessBoard.solver(1, 1);
 
         chessBoard.showBoard();
-        chessBoard.showBoard();
 
         scanner.close();
     }
