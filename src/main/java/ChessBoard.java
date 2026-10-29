@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class ChessBoard {
     private int[] board = new int[9];
     private Knight knight;

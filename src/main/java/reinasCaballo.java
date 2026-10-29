@@ -10,10 +10,10 @@ public class reinasCaballo {
         boolean showHelp = false;
         boolean generateMode = false;
 
-        String inputFile = null;
+        String inputFile;
 
-        String inputPath = args[1];
-        String outputPath = args[2];
+        String inputPath = null;
+        String outputPath = null;
 
         ChessBoard chessBoard;
         SolutionWriter solutionWriter;
@@ -32,7 +32,19 @@ public class reinasCaballo {
                 case "-g":
                     generateMode = true;
                     break;
+                default:
+                    if (arg.startsWith("-")) {
+                        System.out.println("Opcion desconocida, por favor utiliza -h para ayuda");
+                        return;
+                    }
 
+                    if (inputPath == null)
+                        inputPath = arg;
+                    else if (outputPath == null)
+                        outputPath = arg;
+                    else
+                        throw new IllegalArgumentException("Argumento extra");
+                    break;
             }
         }
 
@@ -48,10 +60,13 @@ public class reinasCaballo {
             return;
         }
 
+        if (inputPath == null) throw new NullPointerException("No existe archivo de entrada");
+        if (outputPath == null) throw new NullPointerException("No existe archivo de salida");
+
         try {
             inputFile = Files.readString(Path.of(inputPath));
         } catch (IOException e) {
-            System.err.println("Error reading input file: " + e.getMessage());
+            System.err.println("Error leyendo el archivo: " + e.getMessage());
                 return;
         }
 
