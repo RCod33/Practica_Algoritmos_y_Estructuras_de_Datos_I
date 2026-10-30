@@ -11,12 +11,14 @@ class Knight {
         row = s.charAt(0) - '0';
         col = s.charAt(1) - 96;
 
-        if (!(row == 1 || row == 8 || col == 1 || col == 8) && (row >= 1 && row <= 8 && col >= 1 && col <= 8)) {
-            throw new IllegalArgumentException("Posición inválida: " + s);
+        boolean dentro = row >= 1 && row <= 8 && col >= 1 && col <= 8;
+        boolean borde  = row == 1 || row == 8 || col == 1 || col == 8;
+
+        if (!dentro || !borde) {
+            throw new IllegalArgumentException("Posición inválida: " + s
+                    + " (debe ser fila 1-8, columna a-h y estar en el borde)");
         }
     }
-
-
 
     public int getRow() { return row; }
 

@@ -1,24 +1,24 @@
-import java.util.Scanner;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 public class SolutionWriter {
-    private final int[] board;
+    private final ChessBoard chessBoard;
     private final Knight knight;
     private final PrintWriter outputFile;
 
     public SolutionWriter(ChessBoard chessBoard, String outputPath)
             throws IOException {
 
-        this.board = chessBoard.getBoard();
+        this.chessBoard = chessBoard;
         this.knight = chessBoard.getKnight();
 
         Path path = Path.of(outputPath);
 
         if (Files.exists(path)) {
-            throw new IOException("Oooops output file already exists: " + outputPath);
+            throw new IOException("Oooops el archivo de salida ya existe: " + outputPath);
         }
 
         Files.createFile(path);
@@ -31,7 +31,7 @@ public class SolutionWriter {
             outputFile.print(i + "  | ");
 
             for (int j = 1; j <= 8; ++j) {
-                if (board[j] == i) {
+                if (chessBoard.getRowOfQueen(j) == i) {
                     outputFile.print("R");
                 } else if (i == knight.getRow() && j == knight.getCol()) {
                     outputFile.print("C");
@@ -51,8 +51,8 @@ public class SolutionWriter {
         outputFile.print(convertToChessPos(knight.getCol(), knight.getRow()) + " ");
 
         for(int i = 1; i<=8; ++i) {
-            if(board[i] != 0)
-                outputFile.print(convertToChessPos(i, board[i]) + " ");
+            if(chessBoard.getRowOfQueen(i) != 0)
+                outputFile.print(convertToChessPos(i, chessBoard.getRowOfQueen(i)) + " ");
         }
 
         outputFile.println();
@@ -68,20 +68,23 @@ public class SolutionWriter {
         outputFile.close();
     }
 
-    public void showBoard() {
-        Scanner scanner = new Scanner(System.in);
+    public void showBoard(boolean generateMode) {
+        if(!generateMode) showList();
+        else {
+            Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Seleccione una opcion:");
-        System.out.println("1. Mostrar matriz");
-        System.out.println("2. Mostrar lista");
-        System.out.print("Ingrese el numero de su eleccion: ");
+            System.out.println("Seleccione una opcion:");
+            System.out.println("1. Mostrar matriz");
+            System.out.println("2. Mostrar lista");
+            System.out.print("Ingrese el numero de su eleccion: ");
 
-        int choice = scanner.nextInt();
+            int choice = scanner.nextInt();
 
-        switch (choice) {
-            case 1: showMatrix(); break;
-            case 2: showList(); break;
-            default: System.out.println("Eleccion no valida");
+            switch (choice) {
+                case 1: showMatrix(); break;
+                case 2: showList(); break;
+                default: System.out.println("Eleccion no valida");
+            }
         }
 
 

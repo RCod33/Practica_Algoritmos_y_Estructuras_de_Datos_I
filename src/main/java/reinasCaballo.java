@@ -4,7 +4,7 @@ import java.nio.file.Path;
 
 public class reinasCaballo {
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
 
         boolean traceMode = false;
         boolean showHelp = false;
@@ -18,6 +18,7 @@ public class reinasCaballo {
         ChessBoard chessBoard;
         SolutionWriter solutionWriter;
         Solver solver;
+        Tracer tracer;
 
         for (String arg : args) {
             switch (arg) {
@@ -48,6 +49,8 @@ public class reinasCaballo {
             }
         }
 
+        tracer = new Tracer(traceMode);
+
         if (showHelp) {
             System.out.println(
                     "SINTAXIS:  reinasCaballo  [-t][-h]  [-g]  [fichero  entrada]  [fichero  salida]\n" +
@@ -60,36 +63,45 @@ public class reinasCaballo {
             return;
         }
 
-        if (inputPath == null) throw new NullPointerException("No existe archivo de entrada");
-        if (outputPath == null) throw new NullPointerException("No existe archivo de salida");
+        if (inputPath == null) {
+            System.err.println("Error: falta el fichero de entrada. Usa -h para ver la ayuda.");
+            return;
+        }
+        if (outputPath == null)  {
+            System.err.println("Error: falta el fichero de salida. Usa -h para ver la ayuda.");
+            return;
+        }
 
         try {
-            inputFile = Files.readString(Path.of(inputPath));
+            inputFile = Files.readString(Path.of(inputPath)).strip();
         } catch (IOException e) {
             System.err.println("Error leyendo el archivo: " + e.getMessage());
                 return;
         }
 
         try {
-            chessBoard = new ChessBoard(inputFile);
+            chessBoard = new ChessBoard(inputFile, tracer);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        solver = new Solver(chessBoard, traceMode);
-        solver.solveBoard(1, false);
+        solver = new Solver(chessBoard, tracer);
 
 
-        if (generateMode) {
-            try {
-                solutionWriter = new SolutionWriter(chessBoard, outputPath);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                return;
-            }
-            solutionWriter.showBoard();
-            solutionWriter.close();
+        if (!solver.solveBoard(1, false)) {
+            System.err.println("No existe solución para la posición " + inputFile);
+            return;
         }
+
+        try {
+            solutionWriter = new SolutionWriter(chessBoard, outputPath);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        solutionWriter.showBoard(generateMode);
+        solutionWriter.close();
+
     }
 }
