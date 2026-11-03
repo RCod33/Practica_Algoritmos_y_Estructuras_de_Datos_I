@@ -8,21 +8,29 @@ public class SolutionWriter {
     private final ChessBoard chessBoard;
     private final Knight knight;
     private final PrintWriter outputFile;
+    private final boolean consoleOutput;
 
     public SolutionWriter(ChessBoard chessBoard, String outputPath)
             throws IOException {
 
         this.chessBoard = chessBoard;
         this.knight = chessBoard.getKnight();
+        this.consoleOutput = outputPath == null;
 
-        Path path = Path.of(outputPath);
+        if (outputPath == null) {
+            this.outputFile = new PrintWriter(System.out, true);
+        } else {
+            Path path = Path.of(outputPath);
 
-        if (Files.exists(path)) {
-            throw new IOException("Oooops el archivo de salida ya existe: " + outputPath);
+            if (Files.exists(path)) {
+                throw new IOException(
+                        "El archivo de salida ya existe: " + outputPath
+                );
+            }
+
+            Files.createFile(path);
+            this.outputFile = new PrintWriter(outputPath);
         }
-
-        Files.createFile(path);
-        this.outputFile = new PrintWriter(outputPath);
     }
 
     private void showMatrix() {
@@ -65,28 +73,15 @@ public class SolutionWriter {
     }
 
     public void close() {
-        outputFile.close();
+        if (!consoleOutput) {
+            outputFile.close();
+        } else {
+            outputFile.flush();
+        }
     }
 
     public void showBoard(boolean generateMode) {
         if(!generateMode) showList();
-        else {
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("Seleccione una opcion:");
-            System.out.println("1. Mostrar matriz");
-            System.out.println("2. Mostrar lista");
-            System.out.print("Ingrese el numero de su eleccion: ");
-
-            int choice = scanner.nextInt();
-
-            switch (choice) {
-                case 1: showMatrix(); break;
-                case 2: showList(); break;
-                default: System.out.println("Eleccion no valida");
-            }
-        }
-
-
+        else    showMatrix();
     }
 }

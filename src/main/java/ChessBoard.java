@@ -1,5 +1,5 @@
 public class ChessBoard {
-    private final int[] board = new int[9];   // índice 0 sin usar; board[col] = fila de la reina (0 = sin reina)
+    private final int[] board = new int[9];
     private final Knight knight;
     private final Tracer tracer;
 
@@ -25,6 +25,10 @@ public class ChessBoard {
     }
 
     public boolean isSafeSquare(int col, int row) {
+        return isSafeFromKnight(row, col) && isSafeFromQueens(row, col);
+    }
+
+    private boolean isSafeFromKnight(int row, int col) {
         int diffCol = Math.abs(col - knight.getCol());
         int diffRow = Math.abs(row - knight.getRow());
 
@@ -40,7 +44,10 @@ public class ChessBoard {
             return false;
         }
 
-        // Reinas ya colocadas en columnas anteriores
+        return true;
+    }
+
+    private boolean isSafeFromQueens(int row, int col) {
         for (int colTemp = 1; colTemp < col; ++colTemp) {
             int queenRow = board[colTemp];
             if (queenRow == 0) continue;
