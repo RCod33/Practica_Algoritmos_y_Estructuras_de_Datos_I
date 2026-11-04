@@ -41,7 +41,7 @@ public class reinasCaballo {
         try {
             chessBoard = new ChessBoard(inputFile, tracer);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return;
         }
 

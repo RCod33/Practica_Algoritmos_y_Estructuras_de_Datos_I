@@ -1,5 +1,5 @@
 public class Solver {
-    private  ChessBoard chessBoard;
+    private final ChessBoard chessBoard;
     private final Knight knight;
     private final int last;
     private final Tracer tracer;
@@ -24,12 +24,14 @@ public class Solver {
 
         for (int row = 1; row <= 8; ++row) {
             if (chessBoard.isSafeSquare(col, row)) {
+                tracer.queenPlaced(row, col);
                 chessBoard.putQueen(col, row);
                 finished = solveBoard(col + 1, col == last);
                 if (finished)
                     return true;
                 else {
                     chessBoard.quitQueen(col);
+                    tracer.noSolutionForSquare(row, col);
                 }
             }
         }
