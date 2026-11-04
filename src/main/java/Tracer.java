@@ -37,7 +37,7 @@ public class Tracer {
     }
 
     public void noSolutionForConfig(int col) {
-        printCol(col, "No se encontro una solucion válida para esta configuracion: siguiente columna");
+        printCol(col, "No se encontro una solucion válida para esta configuracion: columna anterior");
     }
 
     public void noValidRows(int col) {

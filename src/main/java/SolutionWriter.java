@@ -79,8 +79,11 @@ public class SolutionWriter {
         }
     }
 
-    public void showBoard(boolean generateMode) {
+    public void showSolution(boolean generateMode) throws IOException {
         if(!generateMode) showList();
         else    showMatrix();
+        if(outputFile.checkError()) {
+            throw new IOException("Error al escribir la salida");
+        }
     }
 }

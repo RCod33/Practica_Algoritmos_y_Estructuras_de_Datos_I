@@ -52,6 +52,7 @@ public class reinasCaballo {
                     arguments.outputPath,
                     arguments.generateMode
             );
+
         } catch (IOException e) {
             System.err.println("Error escribiendo el resultado: " + e.getMessage());
         }
@@ -80,7 +81,7 @@ public class reinasCaballo {
 
         if (!solver.solveBoard(1, false)) {
             System.err.println(
-                    "No existe solución para la posición " + chessBoard
+                    "No existe solución para la posición " + chessBoard.getKnight()
             );
             return;
         }
@@ -88,7 +89,7 @@ public class reinasCaballo {
         SolutionWriter solutionWriter = new SolutionWriter(chessBoard, outputPath);
 
         try {
-            solutionWriter.showBoard(generateMode);
+            solutionWriter.showSolution(generateMode);
         } finally {
             solutionWriter.close();
         }

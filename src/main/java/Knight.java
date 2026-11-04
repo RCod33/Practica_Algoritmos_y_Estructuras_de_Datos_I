@@ -25,4 +25,9 @@ class Knight {
     public int getCol() {
         return col;
     }
+
+    @Override
+    public String toString() {
+        return row + String.valueOf((char) ('a' + col - 1));
+    }
 }
